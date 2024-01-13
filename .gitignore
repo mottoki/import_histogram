@@ -1,0 +1,6 @@
+*.csv
+*.xlsx
+
+*backup*.py
+
+venv/
