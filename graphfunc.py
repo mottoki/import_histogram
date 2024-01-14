@@ -54,7 +54,9 @@ def seaborn_plot(df, col, log_scale, option, rang, grph, rotation=90):
             discrete=discrete)
 
         y.set(xlabel=col)
-        labels = [str(f'{v:.1f}') if v else '' for v in y.containers[0].datavalues]
+        labels = [int(v) if v >= 1 else round(v,1) for v in y.containers[0].datavalues]
+        labels = [str(v) if v else '' for v in labels]
+        # labels = [str(f'{v:.1f}') if v else '' for v in y.containers[0].datavalues]
         y.bar_label(y.containers[0], labels=labels, size=10)
 
         # If discrete x-axis
