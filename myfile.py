@@ -9,17 +9,17 @@ from graphfunc import seaborn_plot, seaborn_histogram
 
 st.set_page_config(page_title='import file', page_icon=None, layout="wide")
 
-# hide_table_row_index = """
-#     <style>
-#     footer {visibility: hidden;}
-#     header {visibility: hidden;}
-#     </style>
-#     """
+hide_table_row_index = """
+    <style>
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    </style>
+    """
 
-# st.markdown(hide_table_row_index, unsafe_allow_html=True)
+st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
-pd.set_option('display.max_columns', None)
-pd.set_option('display.max_rows', None)
+# pd.set_option('display.max_columns', None)
+# pd.set_option('display.max_rows', None)
 
 # ------------- SETTINGS --------------------------------------
 st.subheader('ROCKMASS HISTOGRAM', divider='grey')
