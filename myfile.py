@@ -3,23 +3,23 @@ import pandas as pd
 import numpy as np
 
 from importfunc import file_import, filter_with_all
-from graphfunc import seaborn_plot
+from graphfunc import seaborn_plot, seaborn_histogram
 
 # ------------- CONFIG ----------------------------------
 
 st.set_page_config(page_title='import file', page_icon=None, layout="wide")
 
-hide_table_row_index = """
-    <style>
-    footer {visibility: hidden;}
-    header {visibility: hidden;}
-    </style>
-    """
+# hide_table_row_index = """
+#     <style>
+#     footer {visibility: hidden;}
+#     header {visibility: hidden;}
+#     </style>
+#     """
 
-st.markdown(hide_table_row_index, unsafe_allow_html=True)
+# st.markdown(hide_table_row_index, unsafe_allow_html=True)
 
-# pd.set_option('display.max_columns', None)
-# pd.set_option('display.max_rows', None)
+pd.set_option('display.max_columns', None)
+pd.set_option('display.max_rows', None)
 
 # ------------- SETTINGS --------------------------------------
 st.subheader('ROCKMASS HISTOGRAM', divider='grey')
@@ -88,7 +88,8 @@ if df is not None:
         df[ctgt] = pd.Categorical(values=df[ctgt], categories=tgtlist)
         df.sort_values([ctgt], inplace=True)
         with col1:
-            seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 45)
+            seaborn_histogram(df,ctgt)
+            # seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 45)
         # Strength: column number = 6
         tgtlist = ('R0', 'R1', 'R2', 'R3', 'R4', 'R5', 'R6') # Set list
         ctgt = cols[6]
@@ -103,7 +104,8 @@ if df is not None:
         df[ctgt] = pd.Categorical(values=df[ctgt], categories=tgtlist)
         df.sort_values([ctgt], inplace=True)
         with col2:
-            seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 0)
+            seaborn_histogram(df,ctgt, 0)
+            # seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 0)
         # Spacing: column number = 7
         tgtlist = ('< 0.06', '0.06-0.2', '0.2-0.6', '0.6-2', '> 2') # Set list
         ctgt = cols[7]
@@ -116,7 +118,8 @@ if df is not None:
         df[ctgt] = pd.Categorical(values=df[ctgt], categories=tgtlist)
         df.sort_values([ctgt], inplace=True)
         with col3:
-            seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 0)
+            seaborn_histogram(df,ctgt)
+            # seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 0)
         col1, col2, col3 = st.columns(3, gap="medium")
         # Roughness: column number = 8
         tgtlist = ('PK', 'PS', 'PR', 'UR', 'SR') # Set list
@@ -130,7 +133,8 @@ if df is not None:
         df[ctgt] = pd.Categorical(values=df[ctgt], categories=tgtlist)
         df.sort_values([ctgt], inplace=True)
         with col1:
-            seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 0)
+            seaborn_histogram(df,ctgt, 0)
+            # seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 0)
         # Infill: column number = 9
         tgtlist = ('Soft > 5mm', 'Soft < 5mm', 'Hard > 5 mm', 'Hard < 5mm', 'None') # Set list
         ctgt = cols[9]
@@ -143,12 +147,16 @@ if df is not None:
         df[ctgt] = pd.Categorical(values=df[ctgt], categories=tgtlist)
         df.sort_values([ctgt], inplace=True)
         with col2:
-            seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 45)
+            seaborn_histogram(df,ctgt)
+        #     seaborn_plot(df,ctgt, False, option, tgtlist, 'Histogram', 45)
+        # print(df[ctgt].value_counts(normalize=True)*100)
+
         # Lith: column number = 1
         lithlst = df[cols[1]].unique().tolist()
         df.sort_values([cols[1]], inplace=True)
         with col3:
-            seaborn_plot(df,cols[1], False, option, lithlst, 'Histogram')
+            seaborn_histogram(df,cols[1], 90)
+            # seaborn_plot(df,cols[1], False, option, lithlst, 'Histogram')
     else:
         # Q: column number = 4 ----------------
         qlist = [0.0001, 0.001, 0.01, 0.1, 1, 4, 10, 40, 100, 400, 1000]
@@ -173,7 +181,8 @@ if df is not None:
         df[cjn] = df[cjn].cat.remove_unused_categories()
         df.sort_values([cjn], inplace=True)
         with col1:
-            seaborn_plot(df,cjn, False, option, jnlst, 'Histogram', 45)
+            seaborn_histogram(df,cjn)
+            # seaborn_plot(df,cjn, False, option, jnlst, 'Histogram', 45)
 
         # JR: column number = 6
         jrlst = ['PP', 'PS', 'PR', 'US', 'UR', 'Disc.']
@@ -188,7 +197,8 @@ if df is not None:
         df[cjr] = pd.Categorical(values=df[cjr], categories=jrlst)
         df.sort_values([cjr], inplace=True)
         with col2:
-            seaborn_plot(df,cjr, False, option, jrlst, 'Histogram', 0)
+            seaborn_histogram(df,cjr, 0)
+            # seaborn_plot(df,cjr, False, option, jrlst, 'Histogram', 0)
 
         # JA: column number = 7
         jalst = ['Unaltered', 'Non-softening', 'Low Friction']
@@ -200,12 +210,14 @@ if df is not None:
         df[cja] = pd.Categorical(values=df[cja], categories=jalst)
         df.sort_values([cja], inplace=True)
         with col3:
-            seaborn_plot(df,cja, False, option, jalst, 'Histogram', 45)
+            seaborn_histogram(df,cja)
+            # seaborn_plot(df,cja, False, option, jalst, 'Histogram', 45)
 
         col1, col2, col3 = st.columns(3, gap="medium")
         # Lith: column number = 1
         lithlst = df[cols[1]].unique().tolist()
         df.sort_values([cols[1]], inplace=True)
         with col1:
-            seaborn_plot(df,cols[1], False, option, lithlst, 'Histogram')
+            seaborn_histogram(df,cols[1], 90)
+            # seaborn_plot(df,cols[1], False, option, lithlst, 'Histogram')
 

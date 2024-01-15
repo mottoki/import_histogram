@@ -8,18 +8,46 @@ import seaborn as sns
 from calcfunc import weighted_average, weighted_median
 
 # ------------------ SEABORN GRAPH ----------------------------------
-def graph_neat(plt, col, title):
+# Formatting the graph
+def graph_neat(plt, col, title, xtitle=True):
     # Add ticks
     plt.xticks(size = 12)
     plt.yticks(size = 12)
     # Add Labels
-    plt.xlabel(f'{col}', size = 12)
+    if xtitle:
+        plt.xlabel(f'{col}', size = 12)
+
     if title == 'Histogram':
         plt.ylabel('Percentage', size = 12)
     else:
         plt.ylabel('Percentile', size = 12)
     #Title
-    plt.title(f'{col} {title}')
+    plt.title(f'{col}')
+
+def seaborn_histogram(df, col, rotation=45):
+    dp = df[col].value_counts(normalize=True, sort=False)*100
+    x_dp = dp.index
+    fig, ax = plt.subplots()
+    y = sns.barplot(x=x_dp, y=dp, gap=0, width=0.9, saturation=0.6,
+        color=sns.color_palette("husl",8)[5], edgecolor='black')
+    plt.setp(ax.patches, linewidth=1)
+
+    # Number for each histogram
+    y.set(xlabel=col)
+    labels = [int(v) if v >= 1 else round(v,1) for v in y.containers[0].datavalues]
+    labels = [str(v) if v else '' for v in labels]
+    # labels = [str(f'{v:.1f}') if v else '' for v in y.containers[0].datavalues]
+    y.bar_label(y.containers[0], labels=labels, size=10)
+
+    ax.tick_params(axis='x', rotation=rotation)
+    ax.set_xlabel('')
+
+    # XY axis and title function
+    graph_neat(plt, col, 'Histogram', False)
+
+    # Display
+    st.pyplot(fig)
+
 
 def seaborn_plot(df, col, log_scale, option, rang, grph, rotation=90):
     # Weighted with interval
@@ -65,6 +93,7 @@ def seaborn_plot(df, col, log_scale, option, rang, grph, rotation=90):
             ax.tick_params(axis='x', rotation=rotation)
         # XY axis and title function
         graph_neat(plt, col, 'Histogram')
+
         # Display
         st.pyplot(fig)
 
